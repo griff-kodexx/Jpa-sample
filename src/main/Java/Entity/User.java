@@ -1,5 +1,6 @@
 package Entity;
 
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,12 +9,20 @@ import java.security.NoSuchAlgorithmException;
  * Created by kodexx on 2/8/18.
  */
 
-
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column
     private String fname="";
+    @Column
     private String lname="";
+    @Column
     private String email="";
+    @Column
     private String password="";
 
     public int getId() {

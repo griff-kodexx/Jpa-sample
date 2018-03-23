@@ -1,13 +1,26 @@
 package Entity;
 
+import javax.persistence.*;
+import java.util.List;
+
 /**
  * Created by kodexx on 2/6/18.
  */
+@Entity
+@Table(name = "payments")
 public class Payment {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @OneToOne
     private Patient patient;
+    @Column
     private Service service;
-    private Insurance insurance;
+
+    @OneToMany
+    private List<Insurance> insurance;
+    @Column
     private Double amount;
 
     public int getId() {
@@ -18,28 +31,12 @@ public class Payment {
         this.id = id;
     }
 
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
     public Patient getPatient() {
         return patient;
     }
 
     public void setPatient(Patient patient) {
         this.patient = patient;
-    }
-
-    public Insurance getInsurance() {
-        return insurance;
-    }
-
-    public void setInsurance(Insurance insurance) {
-        this.insurance = insurance;
     }
 
     public Service getService() {
@@ -50,7 +47,19 @@ public class Payment {
         this.service = service;
     }
 
-    public String toString(){
-        return String.valueOf(id);
+    public List<Insurance> getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(List<Insurance> insurance) {
+        this.insurance = insurance;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }

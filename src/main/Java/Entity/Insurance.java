@@ -1,15 +1,27 @@
 package Entity;
 
+import javax.persistence.*;
+
 /**
  * Created by kodexx on 2/6/18.
  */
-public class Insurance {
-     private int id=0;
-     private String name="";
 
-    public Insurance(int id){
+@Entity
+@Table
+public class Insurance {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id=0;
+    @Column
+    private String name="";
+
+    /*public Insurance(int id){
         this.id=id;
         this.name = "Britam";
+    }*/
+
+    public Insurance() {
     }
 
     public  int getId() {

@@ -1,13 +1,27 @@
 package Entity;
 
+import javax.persistence.*;
+
 /**
  * Created by kodexx on 2/6/18.
  */
+@Entity
+@Table(name = "examinations")
 public class Examination {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @OneToOne
     private Appointment appointment;
+    @Column
+    @Lob
     private String doctorComments;
+    @Column
+    @Lob
     private String reccommendation;
+    @Column
+    @Lob
     private String prescription;
 
     public Appointment getAppointment() {

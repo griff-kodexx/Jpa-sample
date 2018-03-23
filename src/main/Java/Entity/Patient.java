@@ -1,25 +1,40 @@
 package Entity;
 
+import javax.persistence.*;
+import java.util.List;
+
 /**
  * Created by kodexx on 2/6/18.
  */
+
+@Entity
+@Table(name = "patients")
 public class Patient {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column
     private String firstName="";
+    @Column
     private String lastName="";
+    @Column
     private String dateOfBirth="";
+    @Column
     private String idNumber="";
-    private Gender gender=null;
+    @Column
+    private Gender gender;
+    @Column
     private String phoneNumber="";
+    @Column
     private String nextOfKinName="";
+    @Column
     private String nextOfKinPhone="";
-    private Insurance insurance=null;
+
+    @OneToMany
+    private List<Insurance> insurance;
 
     public Patient(){}
-
-    public Patient(int id){
-        this.id = id;
-    }
 
     public int getId() {
         return id;
@@ -93,11 +108,11 @@ public class Patient {
         this.nextOfKinPhone = nextOfKinPhone;
     }
 
-    public Insurance getInsurance() {
+    public List<Insurance> getInsurance() {
         return insurance;
     }
 
-    public void setInsurance(Insurance insurance) {
+    public void setInsurance(List<Insurance> insurance) {
         this.insurance = insurance;
     }
 

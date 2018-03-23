@@ -1,29 +1,42 @@
 package Entity;
 
+import javax.persistence.*;
 import javax.print.Doc;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by kodexx on 2/6/18.
  */
+@Entity
+@Table(name = "doctors")
 public class Doctor {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private int dateOfBirth;
+    @Column
     private String email;
+    @Column
     private int idNumber;
+    @Column
     private Gender gender;
+    @Column
     private int phoneNumber;
-    private Department doctorSpeciality;
+
+    @OneToMany
+    private List<Department> doctorSpeciality;
+    @Column
     private boolean isContracted;
 
     public Doctor(){
 
-    }
-
-    public Doctor(int id){
-        this.id = id;
     }
 
     public int getId() {
@@ -90,11 +103,11 @@ public class Doctor {
         this.phoneNumber = phoneNumber;
     }
 
-    public Department getDoctorSpeciality() {
+    public List<Department> getDoctorSpeciality() {
         return doctorSpeciality;
     }
 
-    public void setDoctorSpeciality(Department doctorSpeciality) {
+    public void setDoctorSpeciality(List<Department> doctorSpeciality) {
         this.doctorSpeciality = doctorSpeciality;
     }
 

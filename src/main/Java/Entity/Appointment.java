@@ -1,13 +1,28 @@
 package Entity;
 
+import javax.persistence.*;
+import java.util.Date;
+
 /**
  * Created by kodexx on 2/6/18.
  */
+
+@Entity
+@Table(name = "appointments")
 public class Appointment {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @ManyToOne
     private Patient patient;
+
+    @ManyToOne
     private Doctor doctor;
-    private String date;
+    @Column
+    private Date date;
+    @Column
     private String time;
 
     public Appointment() {
@@ -41,11 +56,11 @@ public class Appointment {
         this.doctor = doctor;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

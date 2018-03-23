@@ -1,13 +1,13 @@
 package DAO.DAOImpl;
 
 import DAO.Crud;
-import Entity.Insurance;
-import Entity.Patient;
-import Entity.Payment;
-import Entity.Service;
+import Entity.*;
 
+import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,61 +16,62 @@ import java.util.List;
 /**
  * Created by kodexx on 2/26/18.
  */
-@RequestScoped
-@Named("paymentCrud")
-public class PaymentCrud extends Crud {
+
+@Stateless(mappedName = "payment")
+public class PaymentCrud implements Crud {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public boolean create(Object o) {
-        Payment p = (Payment) o;
-        return mydb.write("insert into payments (patientID, hospitalServiceID, insuranceID, amount) values("+p.getPatient()+",'"+p.getService()+"',"+p.getInsurance()+","+p.getAmount()+")") > 0;
+        Payment payment = (Payment) o;
+        try{
+            entityManager.persist(payment);
+        } catch (Exception ex){
+            System.out.println("The following exception occured");
+            System.out.println(ex);
+            return false;
+        }
+        return true;
     }
 
     public boolean update(Object o) {
-        return false;
+        Payment payment = (Payment) o;
+        try {
+            entityManager.merge(payment);
+        }catch (Exception e){
+            System.out.println("The following exception occured");
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public boolean delete(Object o) {
-        Payment p = (Payment) o;
-        return mydb.write("delete * from payments where id="+p.getId()) > 0;
+        Payment payment = (Payment) o;
+        try {
+            entityManager.remove(payment);
+        }catch (Exception e){
+            System.out.println("The following exception occured");
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 
-    public Object findByID(Object o) {
-        Payment p = (Payment) o;
-        Payment payment = new Payment();
-        ResultSet rs = mydb.read("select * from payments where id="+p.getId());
-        try {
-            while (rs.next()){
-                payment.setId(rs.getInt("id"));
-                payment.setPatient(new Patient(rs.getInt("patientID")));
-                payment.setService(Service.valueOf(rs.getString("hospitalServiceID")));
-                payment.setInsurance(new Insurance(rs.getInt("insuranceID")));
-                payment.setAmount(rs.getDouble("amount"));
-
-                return payment;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public Object findByID(int id) {
+        Payment payment;
+        try{
+            payment = entityManager.find(Payment.class, id);
+        }catch(Exception ex){
+            System.out.println("The following exception occured");
+            System.out.println(ex.getMessage());
+            return null;
         }
-
         return payment;
     }
 
     public List findAll() {
-        ArrayList<Payment> allPayments = new ArrayList<Payment>();
-        ResultSet rs = mydb.read("select * from payments");
-        try {
-            while (rs.next()){
-                Payment payment = new Payment();
-                payment.setId(rs.getInt("id"));
-                payment.setPatient(new Patient(rs.getInt("patientID")));
-                payment.setService(Service.valueOf(rs.getString("hospitalServiceID")));
-                payment.setInsurance(new Insurance(rs.getInt("insuranceID")));
-                payment.setAmount(rs.getDouble("amount"));
-
-                allPayments.add(payment);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return allPayments;
+        return null;
     }
 }
